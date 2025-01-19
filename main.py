@@ -5,74 +5,48 @@ am = _amMidNPK1.AmMid_NKP1()
 
 
 '''
+v68.1.1
 --------------------------------------------------------------------------
            CHECK LIST สิ่งที่ต้องทำก่อนแข่ง
            1. หาค่าเซนเซอร์ ดำ ขาว
-           2. เคลื่อนที่ตรง โอเคมั๊ย ถ้าไม่ไปปรับค่าตัวแปร gPlus_speedL R
+           2. เคลื่อนที่ตรง โอเคมั๊ย ถ้าไม่ไปปรับค่าตัวแปร gggPlus_vL R
            3. เลี้ยวซ้าย เลี้ยวขวา โอเคมั๊ย  เลือกความเร็วและเวลาการหมุนให้เหมาะสม
 --------------------------------------------------------------------------
 '''
-
+ 
 '''
 --------------------------------------------------------------------------
            ตัวแปร Global
 --------------------------------------------------------------------------
 '''
-#ตัวแปรแก้ไขได้
 
-# ตั้งค่าเซนเซอร์ วางบนสีขาว
-# a0w=3300	;	a1w=3400	;	a2w=3200	;	a3w=3500	;	a4w=3400	;	a5w=3990
-# # ตั้งค่าเซนเซอร์ วางบนสีดำ
-# a0k=600		;	a1k=845		;	a2k=673		;	a3k=987		;	a4k=820		;	a5k=1400
-
-    
 # ตั้งค่า ว่าวิ่งตรงดี หรือไม่ ถ้าไม่ให้ปรับเพิ่มล้อบางล้อ
-Plus_speedL = 0    #ปรับล้อซ้าย เพิ่ม หากสั่งตรงแล้วยังวิ่งไม่ตรง
-Plus_speedR = 1    #ปรับล้อขวา เพิ่ม หากสั่งตรงแล้วยังวิ่งไม่ตรง
-MinSpeed = 20
-spinSlowSpeed = 20
+gPlus_vL = 0    #ปรับล้อซ้าย เพิ่ม หากสั่งตรงแล้วยังวิ่งไม่ตรง
+gPlus_vR = 1    #ปรับล้อขวา เพิ่ม หากสั่งตรงแล้วยังวิ่งไม่ตรง
+
+gSpinVslow = 20
+
 gTuneFast = 30
 gTuneSlow = -20
 # ทดสอบวิ่งตรง 1 แผ่น แล้วกรอกความเร็ว V และ เวลา T  โดยใช้คำสั่ง FS เพื่อทดสอบ
-V = 50             #ความเร็ว 1 แผ่น  เป็นจำนวนเต็ม
-T = 160            #เวลาที่ใช้ 1 แผ่น  เป็นจำนวนเต็ม
+gV = 50             #ความเร็ว 1 แผ่น  เป็นจำนวนเต็ม
+gT = 160            #เวลาที่ใช้ 1 แผ่น  เป็นจำนวนเต็ม
 
-kp = 0.7
-
-   
-
-    
-
-
-
-
-
+kp = 0.7           #ปรับค่าการเหวี่ยง เพื่อรักษาสมดุลย์การเคลื่อนที่
 
 '''
 --------------------------------------------------------------------------
-           เขียนโปรแกรม main
+           โปรแกรม main
 --------------------------------------------------------------------------
 '''
 
 def main():
-    global V,T
     setup()  
-    
-#     while 1:
-#         am.getColor()
-#         am.wait(200)
     box1()
     box2()
     box3()
     box4()
     finish()
-    
-
-    
-    
-    
- 
-      
     
 def box1():
     print("box1")
@@ -88,12 +62,7 @@ def box1():
     L180(50,140)  
 #     gTurnL(30,30,90)
       
-
-
-    
-
-
-    
+ 
 def box2():
     print("box2")
     
@@ -131,53 +100,50 @@ def setup():
     set_distance()
     
 def setMotion():
-    global Plus_speedL,Plus_speedR
+    global gPlus_vL,gPlus_vR
     print("set motion..")
-    am.set_motion(Plus_speedL,Plus_speedR)
+    am.set_motion(gPlus_vL,gPlus_vR)
 def set_distance():
-    global V,T
-    am.set_distance(V,T)
+    global gV,gT
+    am.set_distance(gV,gT)
     
 # [[[[[[[[[[[    SOUND      ]]]]]]]]]]] 
 def beep():
     am.beep()
 
 # [[[[[[[[[[[    MOTION     ]]]]]]]]]]]
-def R90(speed:int,degree:int):
+def R90(v:int,d:int):
     am.show("R90")
     am.reset_gyro();am.wait(40)
-    while am.getYaw() < degree:
-        am.start_move(speed, -speed)
+    while am.getYaw() < d:
+        am.start_move(v, -v)
     while am.getYaw() < 90:
-        am.start_move(spinSlowSpeed, -spinSlowSpeed)
+        am.start_move(gSpinVslow, -gSpinVslow)
     am.stop()
     
 
-def L90(speed:int,degree:int):
+def L90(v:int,d:int):
     am.show("L90")
     am.reset_gyro();am.wait(40)
-    while am.getYaw() > -degree:
-        am.start_move(-speed, speed)
+    while am.getYaw() > -d:
+        am.start_move(-v, v)
     while am.getYaw() > -90:
-        am.start_move(-spinSlowSpeed, spinSlowSpeed)
+        am.start_move(-gSpinVslow, gSpinVslow)
     am.stop()
-def L180(speed:int,degree:int):
+def L180(v:int,d:int):
     am.show("L180")
     am.reset_gyro();am.wait(40)
-    while am.getYaw() > -degree:
-        am.start_move(-speed, speed)
+    while am.getYaw() > -d:
+        am.start_move(-v, v)
     while am.getYaw() > -180:
-        am.start_move(-spinSlowSpeed, spinSlowSpeed)
+        am.start_move(-gSpinVslow, gSpinVslow)
     am.stop()
     
 def myDrop():
-    Drop(sv=1,deg=180,t=800)
+    Drop(sv=1,d=180,t=800)
 
 
-def TL():
-    TurnL( 18,58,600)  					# โค้งซ้าย
-def TR():
-    TurnR( 56,18,580)  					# โค้งขวา
+ 
     
 def FS(v:float,t:int):
     print("FS...") 
@@ -204,14 +170,14 @@ def FP2(n1:float,v1:float , n2:float,v2:float):
     t2 = abs(int(n2*S/v2)) ; am.start_move(v2, v2); am.wait(t2)
     am.stop();        
 
-def F2K(speed:int,nback:float):
+def F2K(v:int,nback:float):
     global gTuneFast,gTuneSlow
     rt = "00"
     am.show("F2K...");
     while True:
         print(am.iW(1))
         if (am.iW(5)  and  am.iW(0) ) and (am.iW(1)  and  am.iW(2) ) :
-            am.start_move(speed,speed)
+            am.start_move(v,v)
         if (am.iB(5)  and  am.iB(0) ) and (am.iW(1)  and  am.iW(2) ):
             rt = "10";break
         if (am.iW(5)  and  am.iW(0) ) and (am.iB(1)  and  am.iB(2) ):
@@ -232,7 +198,7 @@ def F2K(speed:int,nback:float):
          
     am.stop()
     sleep_ms(40)
-    FP(nback,-speed)
+    FP(nback,-v)
     
     
     
@@ -240,20 +206,20 @@ def F2K(speed:int,nback:float):
     return rt
 
 
-def Run(speed:int,tuneFast:int,tuneSlow:int,timeReflect:int):
+def Run(v:int,tuneFast:int,tuneSlow:int,timeReflect:int):
     print("RunLane...");
     flagTune = "00"
     while True:
         if   am.iB(1):
             am.stop(); break
         elif am.iB(0):
-            am.start_move(speed,-speed);am.wait(timeReflect)
+            am.start_move(v,-v);am.wait(timeReflect)
         elif am.iB(2):
-            am.start_move(-speed,speed);am.wait(timeReflect)
+            am.start_move(-v,v);am.wait(timeReflect)
         elif am.iW(1): 
-            am.start_move(speed,speed)  
+            am.start_move(v,v)  
     am.stop() 
-    flagTune = F2K(speed)
+    flagTune = F2K(v)
     if flagTune=="01" :
         while am.iW(5):
             am.start_move(tuneFast,tuneSlow)
@@ -261,11 +227,11 @@ def Run(speed:int,tuneFast:int,tuneSlow:int,timeReflect:int):
         while am.iW(1):
             am.start_move(tuneSlow,tuneFast)
             
-    am.start_move(-speed,-speed)
+    am.start_move(-v,-v)
     am.wait(200); am.stop()
         
 
-def B2K(speed:int,nf:float):
+def B2K(v:int,n:float):
     global gTuneFast,gTuneSlow
     rt = "00"
     am.show("B2K...");
@@ -277,7 +243,7 @@ def B2K(speed:int,nf:float):
         if am.iW(4) and am.iB(3):
             rt = "01";break
         if rt == "00":
-            am.start_move(-speed,-speed)
+            am.start_move(-v,-v)
     am.stop();
     #tune
     if rt == "10":  
@@ -289,44 +255,44 @@ def B2K(speed:int,nf:float):
 
     am.stop()
     sleep_ms(40)
-    FP(nf,speed)
-#     am.start_move(speed, speed)
+    FP(n,v)
+#     am.start_move(v, v)
 #     sleep_ms(50);  am.stop();   
     
-def TurnL(speedL:int,speedR:int,time:int):
+def TurnL(vL:int,vR:int,t:int):
     am.show("TurnL..")
-    if speedL>speedR:
-        speedR,speedL = speedL,speedR
-    am.start_move(speedL, speedR)
+    if vL>vR:
+        vR,vL = vL,vR
+    am.start_move(vL, vR)
     sleep_ms(time);  am.stop()
 
-def TurnR(speedL:int,speedR:int,time:int):
+def TurnR(vL:int,vR:int,t:int):
     print("TurnR...");
-    if speedR>speedL:
-        speedR,speedL = speedL,speedR
-    am.start_move(speedL, speedR)
+    if vR>vL:
+        vR,vL = vL,vR
+    am.start_move(vL, vR)
     sleep_ms(time);  am.stop()
     
-def gTurnL(speedL:int,speedR:int,degree:int):
+def gTurnL(vL:int,vR:int,d:int):
     am.show("gTurnL..")
     am.reset_gyro();am.wait(40)
-    if speedL>speedR:
-        speedR,speedL = speedL,speedR
-    while am.getYaw() > -degree:
-        am.start_move(speedL, speedR)
+    if vL>vR:
+        vR,vL = vL,vR
+    while am.getYaw() > -d:
+        am.start_move(vL, vR)
     am.stop()
     
-def gTurnR(speedL:int,speedR:int,degree:int):
+def gTurnR(vL:int,vR:int,d:int):
     print("gTurnR...")
     am.reset_gyro();am.wait(40)
-    if speedR>speedL:
-        speedR,speedL = speedL,speedR
-    while am.getYaw() < degree:
-        am.start_move(speedL, speedR)
+    if vR>vL:
+        vR,vL = vL,vR
+    while am.getYaw() < d:
+        am.start_move(vL, vR)
     am.stop()
 
 # [[[[[[[[[[[   Servo    ]]]]]]]]]]]  
-def Drop(sv:int,deg:int,t:int):
+def Drop(sv:int,d:int,t:int):
     am.show("Drop..")
     am.sv(svid=sv,degree=0)
     am.wait(t)
@@ -343,17 +309,6 @@ def start_main():
     finally:
         print("Exiting the program")
         am.show("End Program")
-
-
-    
-
-
-
-
- 
-
-
-
 '''
 --------------------------------------------------------------------------
            RUN ห้ามแก้ไข
@@ -362,6 +317,9 @@ def start_main():
 
 start_main()
 
+#     while 1:
+#         am.getColor()
+#         am.wait(200)
 
 '''
 --------------------------------------------------------------------------
@@ -377,16 +335,43 @@ start_main()
 #
 # A4                    A3
 
+# ==== ตัวแปรที่ใช้ ในการเขียนโปรแกรมย่อย
+# v = ความเร็ว velocity vFast=เร็วมาก vSlow=เร็วน้อย,vL= เร็วล้อซ้าย ,vR=เร็วล้อขวา
+# d = องศา ดีกรี degree  
+# n = จำนวนแผ่น
+# t = time เวลา
+
 
 # [[[[[[[[[[[   คำสั่งเคลื่อนที่      ]]]]]]]]]]] 
-# FS(v=50,t=500)                       # เดินหน้า  ด้วยความเร็ว 50 เวลา 0.5 วิ
+
+# =======FS ส่วนใหญ่ใช้เฉพาะอันแรก เพื่อหา ระยะ 1 แผ่น
+# FS(v=50,t=500)                        # เดินหน้า  ด้วยความเร็ว 50 เวลา 0.5 วิ  ใช้สำหรับวิเคราะห์หาแผ่น 1 แผ่น เมื่อได้ค่า 1 แผ่นแล้ว ต้องไปปรับตัวแปร V และ T ด้วย
 # FS(v=-50,t=500)                   	# ถอยหลัง  ด้วยความเร็ว 50 เวลา 0.5 วิ
 # FS2(v1=50,t1=500 , v2=20,t2=200)    	# เดินหน้า 2ช่วง  ด้วยความเร็ว 50 เวลา 0.5 วิ  วิ่งต่อทันทีด้วยความเร็ว 20 เวลา 0.2 วิ แล้วหยุด
 # FS2(v1=-50,t1=500 , v2=-20,t2=200)  	# ถอยหลัง 2ช่วง  ด้วยความเร็ว 50 เวลา 0.5 วิ  วิ่งถอยต่อทันทีด้วยความเร็ว 20 เวลา 0.2 วิ แล้วหยุด
-# FP(n=1,v=50)      					# เดินหน้า   1 แผ่น ด้วยความเร็ว 50 เวลา จะใช้ตามตัวแปรที่ตั้งค่าไว้ 1 แผ่น gT
-# FP(n=1,v=-50)     					# ถอยหลัง  1 แผ่น ด้วยความเร็ว 50 เวลา จะใช้ตามตัวแปรที่ตั้งค่าไว้ 1 แผ่น gT
+
+# =======FP วิ่งไปหน้า หรือถอยหลัง ตามจำนวนแผ่น พร้อมใช้ gyro ในการกำหนดทิศทาง
+# FP(n=1,v=50)      					# เดินหน้า   1 แผ่น ด้วยความเร็ว 50 เวลา จะใช้ตามตัวแปรที่ตั้งค่าไว้ 1 แผ่น  
+# FP(n=1,v=-50)     					# ถอยหลัง  1 แผ่น ด้วยความเร็ว 50 เวลา จะใช้ตามตัวแปรที่ตั้งค่าไว้ 1 แผ่น  
 # FP2(n1=1,v1=50 , n2=0.5,v2=20)
 
-# B2K(20,25,-20)  						# ถอยหลังพร้อมจูน      ถอยด้วยความเร็ว 20 จากนั้นจูนเร็ว 25  จูนช้า -20 (-คือกลับทิศด้วย)
-# TurnL( 50,-50,220)  					# หมุนขวา ด้วยความเร็วซ้าย -50 ขวา 50  ในเวลา 0.22 วินาที
-# TurnR(-50,50,220)  					# หมุนขวา ด้วยความเร็วซ้าย -50 ขวา 50  ในเวลา 0.22 วินาที
+# =======B2K F2K  วิ่งหาเส้นดำ
+# B2K(v=30,n=0.2)                       # ถอยด้วยความเร็ว 30 จนเจอเส้นดำ พร้อมจูน  จากนั้นไปหน้า 0.2 แผ่น
+# F2K(v=30,n=0.2)                       # ไปหน้าด้วยความเร็ว 30 จนเจอเส้นดำ พร้อมจูน  จากนั้นไปถอยหลัง 0.2 แผ่น
+
+# =======L90 R90 L180  หมุนกับที่ด้วย Gyro  เข็มทิศ
+# L90(v=50,d=40)                        # หมุนกับที่ซ้าย ด้วยความเร็ว 50 ไปที่ 40 องศา จากนั้นหมุนช้าจนครบ 90 องศา
+# R90(v=50,d=40)                        # หมุนกับที่ขวา ด้วยความเร็ว 50 ไปที่ 40 องศา จากนั้นหมุนช้าจนครบ 90 องศา
+# L180(v=50,d=140)                      # หมุนกับที่ซ้าย กลับหลัง ด้วยความเร็ว 50 ไปที่ 140 องศา จากนั้นหมุนช้าจนครบ 180 องศา
+
+
+# =======Turn gTurn  หมุนด้วยเวลา  หมุนด้วยเข็มทิศ
+# gTurnL(vL=50,vR=30,d=90)              # หมุนซ้ายด้วย Gyro ด้วยความเร็วซ้าย 50 ขวา 30  หมุนจะกว่า จะถึง 90 องศา  หมุนซัดโค้ง
+# gTurnR( vL=30,vR=50,d=90)  			# หมุนขวาด้วย Gyro ด้วยความเร็วซ้าย 30 ขวา 50  หมุนจะกว่า จะถึง 90 องศา  หมุนซัดโค้ง
+# TurnL( vL=50,vR=-50,t=220)  			# หมุนขวา ด้วยความเร็วซ้าย -50 ขวา 50  ในเวลา 0.22 วินาที
+# TurnR( vL=-50,vR=50,t=220)  			# หมุนขวา ด้วยความเร็วซ้าย -50 ขวา 50  ในเวลา 0.22 วินาที
+
+# =======Drop  ปล่อยลูกเต๋า
+# myDrop()                              # ปล่อยลูกเต๋า ช่อง servo1  ไปที่ 180 องศา เวลา 0.8 วินาที
+# Drop(sv=1,d=180,t=800)                # ปล่อยลูกเต๋า ช่อง servo1  ไปที่ 180 องศา เวลา 0.8 วินาที
+
