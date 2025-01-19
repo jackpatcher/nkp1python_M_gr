@@ -296,7 +296,7 @@ def Drop(sv:int,d:int,t:int):
     am.show("Drop..")
     am.sv(svid=sv,degree=0)
     am.wait(t)
-    am.sv(svid=sv,degree=deg)
+    am.sv(svid=sv,degree=d)
     am.wait(t)
  
  
