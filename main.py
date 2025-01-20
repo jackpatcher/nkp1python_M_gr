@@ -165,7 +165,7 @@ def FP2(n1:float,v1:float , n2:float,v2:float):
     t2 = abs(int(n2*S/v2)) ; am.start_move(v2, v2); am.wait(t2)
     am.stop();        
 
-def F2K(v:int,nback:float):
+def F2K(v:int,n:float):
     global gTuneFast,gTuneSlow
     rt = "00"
     am.show("F2K...");
@@ -193,7 +193,7 @@ def F2K(v:int,nback:float):
          
     am.stop()
     sleep_ms(40)
-    FP(nback,-v)
+    FP(n,-v)
     
     
     
@@ -201,29 +201,27 @@ def F2K(v:int,nback:float):
     return rt
 
 
-def Run(v:int,tuneFast:int,tuneSlow:int,timeReflect:int):
+def Run(n:float,v:int,d:int):
     print("RunLane...");
+    ching = n-1
+    global gTuneFast,gTuneSlow
+
     flagTune = "00"
-    while True:
-        if   am.iB(1):
-            am.stop(); break
-        elif am.iB(0):
-            am.start_move(v,-v);am.wait(timeReflect)
-        elif am.iB(2):
-            am.start_move(-v,v);am.wait(timeReflect)
-        elif am.iW(1): 
-            am.start_move(v,v)  
-    am.stop() 
-    flagTune = F2K(v)
-    if flagTune=="01" :
-        while am.iW(5):
-            am.start_move(tuneFast,tuneSlow)
-    elif flagTune=="10":
-        while am.iW(1):
-            am.start_move(tuneSlow,tuneFast)
-            
-    am.start_move(-v,-v)
-    am.wait(200); am.stop()
+	
+    am.reset_gyro()
+    S = am.get_S() 
+    t = abs(int(ching*(S/v)))
+    for i in range(t):
+        am.zStart_F(v)
+        am.wait(1)
+	if am.iB(0):
+		gTurnL(vL=v,vR=-v,d=d)
+	if am.iB(2):
+		gTurnR(vL=-v,vR=v,d=d)
+    am.stop();
+    FP(n=1,v=v)
+	
+
         
 
 def B2K(v:int,n:float):
