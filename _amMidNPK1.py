@@ -1,5 +1,6 @@
 from _ssd1306 import SSD1306_I2C
 from _MOTOR import Motor
+from _Servo import Servo
 #from _tcs3472 import TCS3472
 import _mpu6050
 from machine import Pin, PWM,ADC,I2C
