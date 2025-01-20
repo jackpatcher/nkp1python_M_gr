@@ -502,13 +502,13 @@ class AmMid_NKP1:
 
     def sv(self,svid:int,degree:int):
         if svid==1:
-            sv1.write_angle(degree)
+            self.sv1.write_angle(degree)
         if svid==2:
-            sv2.write_angle(degree)
+            self.sv2.write_angle(degree)
         if svid==3:
-            sv3.write_angle(degree)
+            self.sv3.write_angle(degree)
         if svid==4:
-            sv4.write_angle(degree)
+            self.sv4.write_angle(degree)
 
 '''
 --------------------------------------------------------------------------
