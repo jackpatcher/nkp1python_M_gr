@@ -26,7 +26,7 @@ class AmMid_NKP1:
     oled = SSD1306_I2C(128, 64)
     m = Motor(2,4,16,17)
     gyro = _mpu6050.MPU6050(i2c)
-    sv1 = Servo(23); sv2 = Servo(19) ; sv3 = Servo(18) ;sv4 = Servo(5)
+    sv1 = Servo(pin=23); sv2 = Servo(pin=19) ; sv3 = Servo(pin=18) ;sv4 = Servo(pin=5)
     #color = TCS3472(i2c) 
 
 
