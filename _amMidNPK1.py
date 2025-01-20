@@ -26,7 +26,8 @@ class AmMid_NKP1:
     oled = SSD1306_I2C(128, 64)
     m = Motor(2,4,16,17)
     gyro = _mpu6050.MPU6050(i2c)
-    sv1 = Servo(pin=23); sv2 = Servo(pin=19) ; sv3 = Servo(pin=18) ;sv4 = Servo(pin=5)
+    sv1 = Servo(Pin(23)) ; sv2 = Servo(Pin(19)) ;sv3 = Servo(Pin(18));sv4 = Servo(Pin(5))
+
     #color = TCS3472(i2c) 
 
 
@@ -501,13 +502,13 @@ class AmMid_NKP1:
 
     def sv(self,svid:int,degree:int):
         if svid==1:
-            sv1.move(degree)
+            sv1.write_angle(degree)
         if svid==2:
-            sv2.move(degree)
+            sv2.write_angle(degree)
         if svid==3:
-            sv3.move(degree)
+            sv3.write_angle(degree)
         if svid==4:
-            sv4.move(degree)
+            sv4.write_angle(degree)
 
 '''
 --------------------------------------------------------------------------
