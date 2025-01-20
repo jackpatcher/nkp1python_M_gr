@@ -3,7 +3,7 @@ import math
 
 # originally by Radomir Dopieralski http://sheep.art.pl
 # from https://bitbucket.org/thesheep/micropython-servo
-
+ 
 class Servo:
     """
     A simple class for controlling hobby servos.
