@@ -26,6 +26,7 @@ class AmMid_NKP1:
     oled = SSD1306_I2C(128, 64)
     m = Motor(2,4,16,17)
     gyro = _mpu6050.MPU6050(i2c)
+    sv1 = Servo(23); sv2 = Servo(19) ; sv3 = Servo(18) ;sv4 = Servo(5)
     #color = TCS3472(i2c) 
 
 
@@ -70,9 +71,7 @@ class AmMid_NKP1:
 
     # sound
     _BZ = 12
-    # servo
-    _SV1 = 23 ; _SV2 = 19 ; _SV3 = 18 ; _SV4 = 5
-    
+ 
     # Knop Switch
     _KNOP = 36
     _SW = 15
@@ -499,24 +498,16 @@ class AmMid_NKP1:
         sleep_ms(t)
         
     # [[[[[[[[[[[     SERVO     ]]]]]]]]]]]  
-    def sv_calc(self,svid:int,dg:int):
-        
-        duty = int(25.57 + (((dg) / 180.0) * 102.3))
-        if duty > 1023 :
-            duty = 1023
-        elif duty < 0:
-            duty =0
-        if svid==1:
-            PWM(Pin(self._SV1), freq=50).duty(duty)
-        if svid==2:
-            PWM(Pin(self._SV2), freq=50).duty(duty)
-        if svid==3:
-            PWM(Pin(self._SV3), freq=50).duty(duty)
-        if svid==4:
-            PWM(Pin(self._SV4), freq=50).duty(duty)
 
     def sv(self,svid:int,degree:int):
-        self.sv_calc(svid,degree)
+        if svid==1:
+            sv1.move(degree)
+        if svid==2:
+            sv2.move(degree)
+        if svid==3:
+            sv3.move(degree)
+        if svid==4:
+            sv4.move(degree)
 
 '''
 --------------------------------------------------------------------------
